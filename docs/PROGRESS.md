@@ -10,14 +10,14 @@
 | Android 静态工具 | 已安装，未完整验收 | Python 3.12、JDK 21、jadx 1.5.6、androguard；pip check 通过；需启动 8791 服务并以实际 APK 验证 |
 | iOS 静态工具 | 已安装，服务需确认 | Ghidra 11.4.3 与 IosGhidraDump 冒烟分析通过；MobSF 已安装，需启动并重新探测 HTTP；需未加密 IPA/模拟器构建验证 |
 | Android Studio / SDK | 已安装 | API 35 Google APIs x86_64 镜像及 Privacy_API_35 AVD 已创建 |
-| Android 动态 | 未就绪 | 最近模拟器加速检查 exit 6；ADB 无设备。Windows 更新后尚未复测加速，尚未验证模拟器启动和采集 |
+| Android 动态 | 未就绪 | 2026-11-05 复测加速仍 exit 6；ADB 无设备。Studio、SDK、镜像和 AVD 文件均存在；尚未验证启动和采集 |
 | WSL2 / Ubuntu | 已安装 | Ubuntu 24.04；当前 Windows 26H2 build 26300.9818 |
 | KVM | 功能验证通过 | `KVM_FUNCTIONAL_CHECK_PASSED: API 12; VM creation succeeded`，不等于整套动态环境验收 |
 | QEMU / OpenCore | 已启动 macOS 桌面 | QEMU 8.2.2；Haswell-noTSX 显式 stepping=4 后越过早期内核崩溃；用户关闭后已重新启动并 SSH 登录 |
 | macOS Sonoma | 安装和桌面设置完成 | 用户 `sw_vers` 截图：14.8.9，Build 23J631 |
 | Xcode / iOS runtime | 已安装并识别 | 用户终端截图：Xcode 16.2，Build 16C5032a；运行时显示 iOS 18.3（18.3.1，22D8075），实际安装版本不是原计划的 18.2 |
 | iOS Simulator | **启动验证通过** | Privacy-iPhone（iPhone 16），UUID 86BAC66F-F3D9-41E6-A424-A391546C6B6F；`simctl list devices booted` 显示 Booted，截图确认进入主屏幕；尚未安装样例应用 |
-| iOS SSH / 动态采集 | 密码 SSH 已验证，采集待配置 | 实际账户密码登录和远程 simctl 已验证；公钥未配置；截图命令、日志和网络采集未验证 |
+| iOS SSH / 动态采集 | 密码 SSH 与截图采集通过，其他采集待验证 | 用户执行 simctl screenshot，桌面 PNG 可见且已查看；公钥未配置；日志与网络采集未验证 |
 | 实际扫描和报告 | 尚未进行 | 无输入 APK/IPA，无完整 QC 或动态证据 |
 
 ## 下一步
@@ -27,10 +27,19 @@
 - [x] 配置完整 Xcode 工具链与 iOS simulator runtime，首次启动设备进入主屏幕。
 - [x] 验证密码 SSH、`xcodebuild -version`、`xcrun simctl list runtimes` 和 Booted 设备。
 - [ ] 配置 SSH 公钥，验证自动化连接。
-- [ ] 在 Windows 更新后重新检查 Android 模拟器加速，启动 AVD 并验证 `adb shell getprop sys.boot_completed`。
+- [x] 在 Windows 更新后重新检查 Android 模拟器加速：2026-11-05 仍 exit 6。
+- [ ] 修复 Android 加速并启动 AVD，验证 `adb shell getprop sys.boot_completed`。
 - [ ] 按测试设备配置 Frida/抓包/日志采集，执行一份有授权的样例动态测试。
 - [ ] 启动本地报告服务和 MobSF，验证健康状态。
 - [ ] 使用实际 APK 与未加密 IPA/模拟器包分别完成静态扫描和报告 QC。
+
+## 2026-11-05 最新探测
+
+- Python/JDK/jadx/Ghidra 启动和依赖检查通过；Ghidra iOS 脚本已有成功冒烟记录；pip check 无破损依赖。
+- MobSF HTTP 端点返回 200；WSL 直接检查被执行环境权限阻止，不应据此误报 MobSF 未安装。
+- 本地报告存储 8791 连接被拒绝，当前未运行。
+- Android 加速 exit 6，ADB 设备列表为空；未完成动态启动验收。
+- macOS SSH 端口有响应，自动化连接因未配置公钥被拒绝；用户密码 SSH 和 Simulator Booted、主屏幕、截图已有截图证据。
 
 ## 排障记录
 
