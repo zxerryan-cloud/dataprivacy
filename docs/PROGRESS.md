@@ -10,7 +10,7 @@
 | Android 静态工具 | 已安装，未完整验收 | Python 3.12、JDK 21、jadx 1.5.6、androguard；pip check 通过；需启动 8791 服务并以实际 APK 验证 |
 | iOS 静态工具 | 已安装，服务需确认 | Ghidra 11.4.3 与 IosGhidraDump 冒烟分析通过；MobSF 已安装，需启动并重新探测 HTTP；需未加密 IPA/模拟器构建验证 |
 | Android Studio / SDK | 已安装 | API 35 Google APIs x86_64 镜像及 Privacy_API_35 AVD 已创建 |
-| Android 动态 | 未就绪 | 2026-11-05 复测加速仍 exit 6；ADB 无设备。Studio、SDK、镜像和 AVD 文件均存在；尚未验证启动和采集 |
+| Android 动态 | 启动待验证 | 沙箱内加速检查 exit 6；进一步直接调用 WHvGetCapability 返回 0x80070005（拒绝访问），可能为沙箱限制，不能据此认定 Windows 未启用 WHPX。待用户普通终端复测；ADB 无设备 |
 | WSL2 / Ubuntu | 已安装 | Ubuntu 24.04；当前 Windows 26H2 build 26300.9818 |
 | KVM | 功能验证通过 | `KVM_FUNCTIONAL_CHECK_PASSED: API 12; VM creation succeeded`，不等于整套动态环境验收 |
 | QEMU / OpenCore | 已启动 macOS 桌面 | QEMU 8.2.2；Haswell-noTSX 显式 stepping=4 后越过早期内核崩溃；用户关闭后已重新启动并 SSH 登录 |
@@ -38,8 +38,9 @@
 - Python/JDK/jadx/Ghidra 启动和依赖检查通过；Ghidra iOS 脚本已有成功冒烟记录；pip check 无破损依赖。
 - MobSF HTTP 端点返回 200；WSL 直接检查被执行环境权限阻止，不应据此误报 MobSF 未安装。
 - 本地报告存储 8791 连接被拒绝，当前未运行。
-- Android 加速 exit 6，ADB 设备列表为空；未完成动态启动验收。
+- Android 加速 exit 6，ADB 设备列表为空；WHvGetCapability 同时返回 0x80070005，检测受沙箱权限影响，需在用户普通终端复测；未完成动态启动验收。
 - macOS SSH 端口有响应，自动化连接因未配置公钥被拒绝；用户密码 SSH 和 Simulator Booted、主屏幕、截图已有截图证据。
+- 本机安卓环境入口已修复 PowerShell 5.1 不支持 utf8NoBOM 的兼容问题；启动入口新增加速预检和共享日志，PowerShell 5.1 语法解析通过；尚未得到用户普通终端启动结果。
 
 ## 排障记录
 
