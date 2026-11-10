@@ -1,11 +1,6 @@
 # DataPrivacy
 
-## 内容入口
-
-| 板块 | 入口 |
-| --- | --- |
-| 法律研究 | [法律研究目录](legal-research/README.md)：[美国 EO 14117](legal-research/us/eo-14117.md)，含英文原文、适用范围、阈值、豁免与电商专题 |
-| App 隐私检测 | 下文的 Android APK 与 iOS IPA 分析流程，以及 `skills/`、`tools/` |
+本仓库用于 App 隐私检测、分析脚本、工具使用及其他技术文档。独立法律研究文档统一维护于 [Privacy-Law-Research](https://github.com/zxerryan-cloud/Privacy-Law-Research)。
 
 面向 Android APK 与 iOS IPA 的隐私合规分析流水线：从敏感 API、调用方、启动链路、请求字段和上传端点定位数据处理线索，再结合冷启动及隐私政策同意前后的运行证据，辅助研发排查、隐私合规审查与整改复测。
 
